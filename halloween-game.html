@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Halloween Catcher</title>
+  <style>
+    body {
+      background-color: #1a0033;
+      color: #ff6600;
+      text-align: center;
+      font-family: Arial;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      color: #ff6600;
+      font-size: 36px;
+      text-shadow: 2px 2px 4px black;
+    }
+
+    p {
+      color: #ffaa00;
+    }
+
+    #game-container {
+      margin: 20px auto;
+      box-shadow: 0 0 20px rgba(255, 102, 0, 0.5);
+    }
+  </style>
+</head>
+<body>
+  <h1>🎃 Halloween Pumpkin Catcher 🎃</h1>
+  <p>Use Arrow Keys to Catch Pumpkins!</p>
+
+  <div id="game-container"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+
+  <script>
+    let basketX = 250;
+    let basketY = 350;
+    let basketWidth = 120;
+    let basketHeight = 30;
+
+    let pumpkinX = 200;
+    let pumpkinY = 50;
+    let pumpkinSize = 40;
+
+    let score = 0;
+
+    function setup() {
+      let canvas = createCanvas(600, 400);
+      canvas.parent('game-container');
+    }
+
+    function draw() {
+      background(20, 0, 40);
+
+      drawStars();
+
+      fill(139, 69, 19);
+      rect(basketX, basketY, basketWidth, basketHeight, 10);
+      fill(255, 140, 0);
+      arc(basketX + basketWidth/2, basketY, basketWidth, 20, 0, PI);
+
+      fill(255, 140, 0);
+      circle(pumpkinX, pumpkinY, pumpkinSize);
+      fill(0, 150, 0);
+      rect(pumpkinX - 5, pumpkinY - pumpkinSize/2 - 5, 10, 8);
+
+      pumpkinY = pumpkinY + 4;
+
+      if (pumpkinY > basketY &&
+          pumpkinX > basketX &&
+          pumpkinX < basketX + basketWidth) {
+        score = score + 1;
+        pumpkinY = 0;
+        pumpkinX = random(50, 550);
+      }
+
+      if (pumpkinY > height) {
+        pumpkinY = 0;
+        pumpkinX = random(50, 550);
+      }
+
+      if (keyIsDown(LEFT_ARROW)) {
+        basketX = basketX - 6;
+      }
+
+      if (keyIsDown(RIGHT_ARROW)) {
+        basketX = basketX + 6;
+      }
+
+      if (basketX < 0) {
+        basketX = 0;
+      }
+      if (basketX > width - basketWidth) {
+        basketX = width - basketWidth;
+      }
+
+      fill(255, 170, 0);
+      textSize(32);
+      textAlign(LEFT);
+      text("🎃 " + score, 20, 40);
+    }
+
+    function drawStars() {
+      fill(255, 255, 255, 150);
+      noStroke();
+      for (let i = 0; i < 20; i++) {
+        let x = (frameCount * 0.5 + i * 30) % width;
+        let y = (i * 37) % height;
+        circle(x, y, 2);
+      }
+    }
+  </script>
+</body>
+</html>
